@@ -576,7 +576,7 @@ After opening `vnc_lite.html`, a complete Linux desktop environment became avail
   <img src="images/no_vnc_interface.png" width="1000"/>
 </p>
 <p align="center">
-  <img src="images/Screenshot 2026-07-19 162651.png" width="1000"/>
+  <img src="images/Screenshot 2026-07-19 162934.png" width="1000"/>
 </p>
 ### GUI Environment Flow
 
