@@ -1,0 +1,88 @@
+Task-1: Environment Setup & RISC-V Reference Bring-Up
+Deadline: 48 hours from task release
+ Mandatory for all participants
+This task ensures that every participant—regardless of FPGA board availability—starts from a common, stable baseline, exactly how engineers are onboarded in industry.
+Objective
+Set up the development environment and successfully run a working RISC-V reference design, followed by running the VSDFPGA labs on the same environment.
+This task focuses on:
+Toolchain readiness
+Understanding the RISC-V execution flow
+Preparing for upcoming FPGA and IP development work
+This is not an FPGA programming task yet.
+Step 1: Set up GitHub Codespace (Mandatory for everyone)
+Participants must first set up the official Codespace environment using the reference repository below:
+https://github.com/vsdip/vsd-riscv2
+Instructions
+Fork the vsd-riscv2 repository to your GitHub account.
+Launch a GitHub Codespace from your fork.
+Ensure the Codespace builds successfully and opens without errors.
+This Codespace provides a known-good base environment that will be used throughout the internship.
+Step 2: Verify RISC-V Reference Flow (Mandatory)
+Inside the vsd-riscv2 Codespace:
+Follow the README instructions in the repository.
+Build and run the provided fundamental RISC-V program.
+Observe successful execution (console output / logs).
+Expected outcome:
+RISC-V program runs successfully
+No build or runtime errors
+Clear confirmation that the toolchain is working
+Step 3: Clone and Run VSDFPGA Labs (Mandatory)
+Once the RISC-V reference flow works, clone the FPGA labs repository inside the same Codespace:
+git clone https://github.com/vsdip/vsdfpga_labs.git
+cd vsdfpga_labs
+Follow the README instructions in vsdfpga_labs to:
+Build and run the basic lab(s) that do not require FPGA hardware
+Verify successful execution through simulation or logs
+This step validates:
+Multi-repository workflow
+Readiness for IP and SoC-level tasks
+Step 4: Local Machine Preparation (Strongly Encouraged)
+Participants are encouraged to begin preparing their local development environment, as FPGA board work will require local execution.
+Instructions
+Clone both repositories locally:
+vsd-riscv2
+vsdfpga_labs
+Refer to the following Dockerfile carefully:
+ https://raw.githubusercontent.com/vsdip/vsd-riscv2/refs/heads/main/.devcontainer/Dockerfile
+Important clarification
+The Dockerfile is not meant to be run blindly.
+It serves as a reference document listing:
+Required tools
+Packages
+Environment setup hints
+Participants should use it as guidance to install tools natively on their system (Linux preferred).
+This step is about understanding what tools are needed, not completing a full FPGA setup yet.
+Understanding Check (Mandatory)
+Participants must submit brief answers to the following questions:
+Where is the RISC-V program located in the vsd-riscv2 repository?
+How is the program compiled and loaded into memory?
+How does the RISC-V core access memory and memory-mapped IO?
+Where would a new FPGA IP block logically integrate in this system?
+Short, clear explanations are sufficient.
+Optional Confidence Task
+Participants may optionally:
+Modify a constant or message in the RISC-V program
+Rebuild and rerun
+Observe and report the changed output
+This is optional but recommended.
+Submission Requirements
+Participants must create GitHub repo and submit below information:
+Screenshot or log showing successful execution of:
+RISC-V reference program
+VSDFPGA lab
+Answers to the four understanding questions
+Confirmation of environment used:
+GitHub Codespace only
+Codespace + local setup (partial or complete)
+Important Notes
+FPGA tools (yosys, nextpnr, programmers, drivers) must NOT be installed at this stage.
+FPGA bring-up will be introduced in later tasks after RTL and integration confidence is built.
+Board availability does not affect Task-1 completion.
+Rationale (for participants)
+This task reflects how real semiconductor teams work:
+Environment first
+Reference design validation
+Understanding before modification
+Hardware later, not first
+Completing Task-1 successfully means you are ready for real IP and FPGA work in the upcoming weeks.
+ 
