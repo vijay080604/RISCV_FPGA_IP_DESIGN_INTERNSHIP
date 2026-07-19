@@ -461,6 +461,102 @@ The following diagram summarizes the complete workflow followed during this task
                     ▼
          Program Terminates
 ```
+---
+
+# Running the First RISC-V Reference Program
+
+After verifying the toolchain using the simple `hello-spike` example, the next step was to compile and execute one of the reference applications provided in the repository.
+
+The sample program `sum1ton.c` demonstrates the complete RISC-V software execution flow by calculating the sum of numbers from **1 to 9** and displaying the result through the Proxy Kernel.
+
+---
+
+## Step 1: Inspect the Source Program
+
+```bash
+cat sum1ton.c
+```
+<p align="center">
+  <img src="images/sum1ton.c_code.png" width="1000"/>
+</p>
+The source code was inspected before compilation to understand its functionality and expected output.
+
+---
+
+## Step 2: Compile the Program
+
+```bash
+riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c
+```
+<p align="center">
+  <img src="images/sum1ton.o_output.png" width="1000"/>
+</p>
+### Compilation Flow
+
+```text
+sum1ton.c
+      │
+      ▼
+RISC-V Cross Compiler
+(riscv64-unknown-elf-gcc)
+      │
+      ▼
+sum1ton.o
+```
+
+The compiler successfully generated the executable `sum1ton.o`.
+
+---
+
+## Step 3: Execute the Program
+
+```bash
+spike pk sum1ton.o
+```
+<p align="center">
+  <img src="images/spike_output_of_sum1ton.o.png" width="1000"/>
+</p>
+<p align="center">
+  <img src="images/verification_of_sum1ton.o.png" width="1000"/>
+</p>
+### Program Output
+
+```text
+Sum from 1 to 9 is 45
+```
+
+The output confirms that:
+
+- The RISC-V cross compiler generated a valid executable.
+- The Spike ISA Simulator successfully executed the program.
+- The Proxy Kernel correctly initialized the runtime environment before transferring control to the application.
+
+---
+
+## Complete Execution Flow
+
+```text
+          sum1ton.c
+               │
+               ▼
+    RISC-V Cross Compiler
+               │
+               ▼
+      sum1ton.o (ELF)
+               │
+               ▼
+      Spike ISA Simulator
+               │
+               ▼
+       Proxy Kernel (pk)
+               │
+               ▼
+      Execute Application
+               │
+               ▼
+   Sum from 1 to 9 is 45
+```
+
 
 ---
 
@@ -475,11 +571,15 @@ The following diagram summarizes the complete workflow followed during this task
 | 5 | `cat samples/Makefile` | Display the Makefile contents. | Understood the automated build process. |
 | 6 | `cd samples` | Change to the sample directory. | Accessed the build environment. |
 | 7 | `make hello-spike` | Build the reference application. | Successfully generated `hello.c` and `hello.elf`. |
-| 8 | `ls -l` | Verify generated files. | Confirmed the build artifacts. |
-| 9 | `file hello.elf` | Inspect the executable format. | Verified the executable as a RISC-V ELF file. |
-| 10 | `spike --help` | Display Spike usage information. | Confirmed the simulator installation. |
-| 11 | `which pk` | Locate the Proxy Kernel. | Verified that `pk` is installed. |
-| 12 | `spike pk hello.elf` | Execute the reference application. | Successfully executed the application using Spike and the Proxy Kernel. |
+| 8 | `ls -l` | Verify generated build artifacts. | Confirmed the creation of `hello.c` and `hello.elf`. |
+| 9 | `file hello.elf` | Inspect the executable format. | Verified the executable as a 64-bit RISC-V ELF file. |
+| 10 | `spike --help` | Display Spike simulator usage information. | Confirmed the installation and available simulator options. |
+| 11 | `which pk` | Locate the Proxy Kernel executable. | Verified that the Proxy Kernel (`pk`) is installed and accessible. |
+| 12 | `spike pk hello.elf` | Execute the reference application. | Successfully executed the sample program using Spike and the Proxy Kernel. |
+| 13 | `cat sum1ton.c` | Inspect the reference source program. | Understood the application logic before compilation. |
+| 14 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Compile the reference RISC-V application. | Successfully generated the executable `sum1ton.o`. |
+| 15 | `file sum1ton.o` | Verify the generated executable format. | Confirmed that the generated file is a RISC-V ELF executable. |
+| 16 | `spike pk sum1ton.o` | Execute the compiled RISC-V application. | Successfully produced the expected output: **"Sum from 1 to 9 is 45"**. |
 
 ---
 
@@ -487,12 +587,16 @@ The following diagram summarizes the complete workflow followed during this task
 
 | Topic | Learning |
 |--------|----------|
-| Cross Compilation | Programs developed on an x86-64 host require a cross compiler to generate RISC-V executables. |
-| Makefile | Automates the generation and compilation of the reference application. |
-| ELF | Stores executable machine code along with metadata required for execution. |
-| Spike ISA Simulator | Emulates a RISC-V processor, enabling execution of RISC-V programs on the host machine. |
-| Proxy Kernel (`pk`) | Provides the minimal runtime environment required before the application starts. |
-| Software Execution Flow | A RISC-V application follows the sequence: Source Code → Cross Compiler → ELF → Spike → Proxy Kernel → Program Execution. |
+| GitHub Codespaces | Provides a preconfigured cloud-based development environment for RISC-V development. |
+| Repository Structure | The repository is organized into environment configuration, documentation, and sample applications. |
+| `.devcontainer` | Defines the software environment automatically configured within GitHub Codespaces. |
+| Makefile | Automates the generation and compilation of RISC-V applications. |
+| Cross Compilation | Applications are compiled on an x86-64 host to generate executables for the RISC-V architecture. |
+| ELF Executable | The compiler generates an ELF executable containing machine instructions, memory layout, and debugging information. |
+| Spike ISA Simulator | Emulates a RISC-V processor, enabling RISC-V applications to execute on an x86-64 host system. |
+| Proxy Kernel (`pk`) | Provides a lightweight runtime environment that initializes the application before transferring control to `main()`. |
+| Reference Program Execution | Successfully compiled and executed multiple RISC-V reference applications using the Spike simulator. |
+| Program Verification | Verified the correctness of the reference application by comparing the execution result with the expected output. |
+| Software Execution Flow | Understood the complete workflow: **C Source → Cross Compiler → ELF Executable → Spike ISA Simulator → Proxy Kernel → Program Execution**. |
 
 ---
-
