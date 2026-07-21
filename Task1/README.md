@@ -1,58 +1,80 @@
 # Task-1: Environment Setup & RISC-V Reference Bring-Up
 
-## Objective
-
-Set up the official development environment, validate the RISC-V reference design, and prepare the workflow for upcoming IP development and FPGA tasks.
-
----
-
-## Learning Objectives
-
-- Set up the GitHub Codespaces development environment.
-- Explore the repository structure.
-- Understand the development environment configuration.
-- Identify the sample RISC-V applications and build files.
-- Understand the build workflow before executing the reference program.
+> **Internship:** RISC-V FPGA IP Design Internship  
+> **Organization:** VLSI System Design (VSD)  
+> **Task:** Environment Setup & RISC-V Reference Bring-Up
 
 ---
 
-## Activities
+#  Overview
 
-- Fork the official `vsd-riscv2` repository
-- Launch GitHub Codespace
-- Explore the repository structure
-- Analyze the sample build system
-- Build and execute the reference RISC-V program *(In Progress)*
-- Clone and run the `vsdfpga_labs`
-- Understand the RISC-V execution flow
-- Prepare the local development environment
+Every digital hardware project begins with a reliable development environment. Before designing custom hardware IPs or implementing FPGA-based systems, it is essential to establish a software workflow capable of compiling, executing, and validating RISC-V applications.
+
+This task focuses on setting up the official development environment provided for the internship and understanding how a RISC-V program progresses from source code to execution. Rather than simply running a reference application, the objective is to explore the complete software toolchain, examine the repository structure, understand the build process, and validate the execution flow using the **Spike ISA Simulator**.
+
+Throughout this task, every component involved in the software development pipeline—including the cross compiler, executable format, simulator, and runtime environment—is studied to build a strong foundation for the upcoming FPGA and custom IP development tasks.
 
 ---
 
-## Repository
+#  Objectives
 
-### Official Repository
+The primary objectives of this task are:
 
+- Configure the official development environment using GitHub Codespaces.
+- Explore the structure of the reference repository.
+- Understand the purpose of the development container.
+- Study the Makefile-based build system.
+- Compile a RISC-V application using the cross compiler.
+- Execute the generated executable using the Spike ISA Simulator.
+- Understand the role of the Proxy Kernel during program execution.
+- Compare native execution with cross-compiled RISC-V execution.
+- Explore GUI-based development using the noVNC desktop.
+
+---
+
+#  Development Environment
+
+The complete development environment is hosted in **GitHub Codespaces**, providing a pre-configured Ubuntu-based workspace with all the required RISC-V development tools already installed.
+
+| Component | Details |
+|-----------|---------|
+| Development Platform | GitHub Codespaces |
+| Operating System | Ubuntu Linux |
+| IDE | Visual Studio Code |
+| Target Architecture | RISC-V |
+| Host Architecture | x86-64 |
+| Simulator | Spike ISA Simulator |
+| Runtime | Proxy Kernel (pk) |
+
+Using a cloud-based development environment ensures that every participant works with an identical software configuration, eliminating dependency and installation issues while allowing immediate focus on learning the RISC-V workflow.
+
+---
+
+# Repository
+
+## Official Repository
+
+```
 https://github.com/vsdip/vsd-riscv2
+```
 
-### Personal Fork
+## Personal Fork
 
+```
 https://github.com/vijay080604/vsd-riscv2
+```
+
+The repository was first forked into my personal GitHub account to maintain an independent copy for experimentation, documentation, and future development throughout the internship.
 
 ---
 
-## Environment
+#  Exploring the Repository
 
-| Item | Details |
-|------|---------|
-| Development Environment | GitHub Codespaces |
-| Interface | VS Code Desktop |
-| Operating System | Ubuntu (Codespace Container) |
-| Working Directory | `/workspaces/vsd-riscv2` |
+Understanding the organization of a project is the first step toward effective development. Before compiling or executing any application, the repository structure was explored to identify the purpose of each directory and understand how the development environment is organized.
 
 ---
 
-## Repository Structure
+## Repository Layout
 
 ```text
 vsd-riscv2
@@ -63,109 +85,102 @@ vsd-riscv2
 └── README.md
 ```
 
-### Directory Overview
+---
 
-| Directory / File | Description |
-|------------------|-------------|
-| `.devcontainer` | Configuration files used to create the GitHub Codespaces development environment. |
-| `images` | Stores images used throughout the project documentation. |
-| `samples` | Contains sample RISC-V programs, startup assembly, and the Makefile used for compilation. |
-| `README.md` | Provides instructions for setting up and using the reference repository. |
+### `.devcontainer`
+
+The `.devcontainer` directory contains the configuration required to automatically create the GitHub Codespaces development environment.
+
+Instead of manually installing compilers, simulators, and supporting tools, Codespaces reads these configuration files and builds a reproducible Linux workspace.
+
+The directory contains:
+
+| File | Description |
+|------|-------------|
+| Dockerfile | Defines the Ubuntu-based software environment. |
+| devcontainer.json | Configures the Codespace startup environment. |
+| supervisord.conf | Launches background services required inside the container. |
 
 ---
 
-## Repository Exploration
+### `samples`
 
-### Development Environment Files
+The **samples** directory contains the reference applications used throughout the internship.
 
-The `.devcontainer` directory contains the files responsible for creating and configuring the development environment.
+These applications demonstrate the complete software development workflow, beginning with C source code and ending with execution on a simulated RISC-V processor.
 
-| File | Purpose |
-|------|---------|
-| `Dockerfile` | Defines the software environment used by GitHub Codespaces. |
-| `devcontainer.json` | Configures the Codespace environment and startup behavior. |
-| `supervisord.conf` | Starts background services required by the Codespace environment. |
-
----
-
-### Sample Programs
-
-The `samples` directory contains the reference programs used throughout the internship.
-
-| File | Purpose |
-|------|---------|
-| `Makefile` | Automates the build process for the sample program. |
-| `load.S` | Startup assembly executed before the C application begins. |
-| `sum1ton.c` | Sample C program demonstrating a simple computation. |
-| `1ton_custom.c` | Sample C program for demonstrating custom functionality. |
+| File | Description |
+|------|-------------|
+| Makefile | Automates the build process. |
+| load.S | Startup assembly executed before the application. |
+| hello.c | Simple reference application. |
+| sum1ton.c | Example program used throughout this task. |
+| 1ton_custom.c | Sample application for experimentation. |
 
 ---
 
-## Build System Overview
+### `images`
 
-The sample project uses a Makefile to automate compilation.
+This directory stores all screenshots and figures used to document the implementation process.
 
-### Build Flow
-
-```text
-Makefile
-     │
-     ▼
-Generate hello.c
-     │
-     ▼
-RISC-V GCC Compiler
-     │
-     ▼
-Generate hello.elf
-```
-
-At this stage, the Makefile has been analyzed to understand the compilation flow. The build process will be executed in the next section.
+Maintaining screenshots alongside the documentation provides clear evidence of successful execution while making the repository easier to understand.
 
 ---
 
-# Proof of Completion
+#  Repository Exploration
 
-## Step 1: Repository Fork
+## Repository Fork
 
 <p align="center">
-  <img src="images/forked_repository.png" alt="Forked Repository" width="1000"/>
+<img src="images/forked_repository.png" width="1000">
 </p>
 
-**Figure 1.** Successfully forked the official `vsd-riscv2` repository into my personal GitHub account.
+**Figure 1.** Official repository successfully forked into the personal GitHub account.
 
 ---
 
-## Step 2: GitHub Codespace
+## GitHub Codespaces Initialization
 
 <p align="center">
-  <img src="images/code_space_setup_01.png" width="1000"/>
+<img src="images/code_space_setup_01.png" width="1000">
 </p>
 
 <p align="center">
-  <img src="images/code_space_setup_02.png" width="1000"/>
+<img src="images/code_space_setup_02.png" width="1000">
 </p>
 
-**Figure 2.** GitHub Codespace was successfully initialized and connected using VS Code Desktop. The repository was mounted successfully and verified using the `pwd` and `ls` commands.
+**Figure 2.** GitHub Codespace successfully initialized and connected using Visual Studio Code.
 
 ---
 
-## Step 3: Repository Exploration
+## Repository Structure Verification
 
 <p align="center">
-  <img src="images/repository_exploration.png" width="1000"/>
+<img src="images/repository_exploration.png" width="1000">
 </p>
 
-**Figure 3.** Explored the repository structure and inspected the `.devcontainer` and `samples` directories to understand the development environment and sample project organization.
+**Figure 3.** Repository directories explored to understand the overall project organization.
 
 ---
+
+# ⚙ Understanding the Build System
+
+One of the most important components of any software project is its build system. Instead of manually compiling every source file, build automation tools simplify the development workflow by defining all compilation steps in a single location.
+
+The reference repository uses a **GNU Makefile** to automate this process.
+
+Rather than directly invoking the compiler every time, the Makefile specifies:
+
+- Which source files should be generated.
+- Which compiler should be used.
+- Which compiler options should be applied.
+- What executable should be produced.
+
+This approach ensures that every build follows a consistent and reproducible process.
+
 ---
 
-# Build System Overview
-
-The sample project uses a **Makefile** to automate the compilation of a RISC-V application. Instead of manually creating source files and invoking the compiler, the Makefile defines a sequence of build steps that generate the executable.
-
-## Build Flow
+## Build Workflow
 
 ```text
                 Makefile
@@ -178,90 +193,138 @@ The sample project uses a **Makefile** to automate the compilation of a RISC-V a
 (riscv64-unknown-elf-gcc)
                     │
                     ▼
-         Generate hello.elf
+            hello.elf
 ```
 
-The build process generates a simple C program (`hello.c`) and compiles it using the RISC-V cross compiler to produce a RISC-V executable (`hello.elf`).
+The generated executable (`hello.elf`) targets the **RISC-V architecture**, making it suitable for execution on the Spike ISA Simulator rather than on the host machine.
+
+Before running any application, understanding this build pipeline is essential because every subsequent task in the internship relies on the same software development workflow.
 
 ---
 
-# Reference Program Compilation
+## Why Study the Build Process?
 
-## Step 1: Navigate to the Sample Directory
+Although the Makefile hides much of the compilation complexity, understanding what happens internally is important for embedded software development.
+
+A RISC-V application follows a series of well-defined stages:
+
+```text
+C Source Code
+      │
+      ▼
+Cross Compiler
+      │
+      ▼
+RISC-V Executable
+      │
+      ▼
+Spike ISA Simulator
+      │
+      ▼
+Proxy Kernel
+      │
+      ▼
+Program Execution
+```
+
+This execution flow forms the software foundation for all future tasks involving custom IP development, SoC integration, and FPGA implementation.
+# Compiling the First RISC-V Application
+
+After understanding how the build system is organized, the next step is to validate the software toolchain by compiling the reference application provided in the repository.
+
+The objective of this exercise is not only to generate an executable, but also to understand how a C program is transformed into a RISC-V executable that can be executed on a simulated processor.
+
+The reference repository provides a Makefile that automates the complete build process.
+
+---
+
+## Navigating to the Sample Directory
+
+The sample applications are located inside the `samples` directory.
 
 ```bash
 cd samples
 ```
 
-The `samples` directory contains the Makefile and the reference programs used throughout the internship.
+This directory contains the source files, startup assembly, linker configuration, and the Makefile required for building the reference applications.
 
 ---
 
-## Step 2: Build the Reference Program
+## Building the Reference Application
+
+The reference application was compiled using the following command.
 
 ```bash
 make hello-spike
 ```
+
 <p align="center">
-  <img src="images/Screenshot 2026-07-19 171236.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 171236.png" width="1000">
 </p>
+
 <p align="center">
-  <img src="images/Screenshot 2026-07-19 173204.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 173204.png" width="1000">
 </p>
-### Build Output
 
-```text
-riscv64-unknown-elf-gcc -o hello.elf hello.c
-Done.
-```
+The Makefile automatically performs the following operations:
 
-The Makefile automatically:
+- Generates the source file `hello.c`
+- Invokes the RISC-V cross compiler
+- Produces the executable `hello.elf`
 
-- Generates the `hello.c` source file.
-- Invokes the RISC-V cross compiler.
-- Produces the executable file `hello.elf`.
-
-### Compilation Flow
-
-```text
-hello.c
-     │
-     ▼
-RISC-V Cross Compiler
-(riscv64-unknown-elf-gcc)
-     │
-     ▼
-hello.elf
-```
+The successful completion of the build confirms that the development environment has been configured correctly.
 
 ---
 
-## Step 3: Verify the Generated Files
+## Build Flow
+
+```text
+            hello.c
+                │
+                ▼
+   RISC-V Cross Compiler
+(riscv64-unknown-elf-gcc)
+                │
+                ▼
+            hello.elf
+```
+
+Unlike a native executable, the generated file contains RISC-V machine instructions and therefore cannot be executed directly on the host machine.
+
+---
+
+## Verifying the Build Output
+
+The generated files were verified using:
 
 ```bash
 ls -l
 ```
 
-### Output
+The output confirms that both the source file and the executable have been successfully created.
 
 ```text
 hello.c
 hello.elf
 ```
 
-The successful generation of both files confirms that the compilation completed without errors.
+The presence of `hello.elf` indicates that the compilation completed successfully without any errors.
 
 ---
 
-## Step 4: Inspect the Executable
+## Inspecting the Executable
+
+The executable format was verified using the Linux `file` utility.
 
 ```bash
 file hello.elf
 ```
+
 <p align="center">
-  <img src="images/Screenshot 2026-07-19 173652.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 173652.png" width="1000">
 </p>
-### Output
+
+Output:
 
 ```text
 ELF 64-bit LSB executable,
@@ -272,57 +335,127 @@ statically linked,
 not stripped
 ```
 
-This verifies that the generated executable targets the **RISC-V architecture** rather than the host machine.
+The output confirms that the executable targets the **RISC-V Instruction Set Architecture (ISA)** rather than the x86-64 processor used by the development environment.
 
 ---
 
-# Reference Program Execution
+# Understanding the Generated Executable
 
-## Step 1: Explore the Spike ISA Simulator
+The executable generated during compilation follows the **Executable and Linkable Format (ELF)**, which is the standard executable format used by Linux systems and supported by the RISC-V toolchain.
+
+An ELF executable contains considerably more information than machine instructions alone.
+
+It includes:
+
+- Program entry point
+- Machine instructions
+- Data sections
+- Memory layout information
+- Symbol table
+- Debugging information
+
+During execution, the simulator reads this information to correctly load the application into memory before transferring control to the program.
+
+---
+
+# Executing the Reference Application
+
+Since `hello.elf` contains RISC-V instructions, it cannot execute directly on an x86-64 processor.
+
+Instead, the executable must be executed using the **Spike ISA Simulator**, which emulates a complete RISC-V processor.
+
+Before executing the application, the availability of the simulator and the runtime environment was verified.
+
+---
+
+## Verifying the Spike ISA Simulator
 
 ```bash
 spike --help
 ```
 
-This command displays the available options and confirms that the Spike ISA Simulator is installed in the development environment.
+The command displays the available simulator options and confirms that the Spike simulator has been installed correctly.
 
 ---
 
-## Step 2: Verify the Proxy Kernel
+## Verifying the Proxy Kernel
+
+The location of the Proxy Kernel was verified using:
 
 ```bash
 which pk
 ```
+
 <p align="center">
-  <img src="images/Screenshot 2026-07-19 175700.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 175700.png" width="1000">
 </p>
-### Output
+
+Output
 
 ```text
 /opt/riscv/riscv64-unknown-elf/bin/pk
 ```
 
-The output confirms that the Proxy Kernel (`pk`) is available and ready to execute RISC-V applications.
+The output confirms that the runtime environment required for executing RISC-V applications is available.
 
 ---
 
-## Step 3: Execute the Reference Program
+## Executing the Application
+
+The compiled executable was executed using Spike together with the Proxy Kernel.
 
 ```bash
 spike pk hello.elf
 ```
 
-### Observation
+Output
 
 ```text
 bbl loader
 ```
 
-The program executed successfully and returned to the terminal without errors.
+The application completed successfully without reporting any runtime errors.
 
-The message **"bbl loader"** is displayed by the **Proxy Kernel**, indicating that the runtime environment was initialized before transferring control to the application.
+The message **"bbl loader"** is generated by the Proxy Kernel during initialization.
 
-Since the sample program only returns a value and does not print anything to the console, no additional output is expected.
+Since the sample application does not print any data to the terminal, no additional output is expected.
+
+The successful execution confirms that:
+
+- the cross compiler generated a valid executable,
+- the Spike simulator successfully emulated the RISC-V processor,
+- the Proxy Kernel initialized the runtime environment correctly.
+
+---
+
+# Software Execution Flow
+
+The complete software execution pipeline followed during this task is illustrated below.
+
+```text
+             C Program
+            (hello.c)
+                 │
+                 ▼
+      RISC-V Cross Compiler
+                 │
+                 ▼
+            hello.elf
+        (ELF Executable)
+                 │
+                 ▼
+      Spike ISA Simulator
+                 │
+                 ▼
+       Proxy Kernel (pk)
+                 │
+                 ▼
+         Program Execution
+```
+
+This execution pipeline forms the software foundation for every subsequent task in the internship.
+
+Every custom hardware IP, software application, or FPGA demonstration developed later will ultimately follow the same sequence of compilation and execution.
 
 ---
 
@@ -330,63 +463,201 @@ Since the sample program only returns a value and does not print anything to the
 
 ## Why is a Cross Compiler Required?
 
-The reference application is written in the C programming language, which cannot be executed directly by a RISC-V processor. It must first be translated into RISC-V machine instructions.
+The development environment used during this internship runs on an **x86-64 processor**, whereas the target platform follows the **RISC-V Instruction Set Architecture**.
 
-Because the development environment uses an **x86-64 processor** while the target architecture is **RISC-V**, a **cross compiler** is required.
+Because both processors understand different machine instructions, a normal GCC compiler cannot generate software for a RISC-V processor.
 
-### Cross Compilation Flow
+Instead, a **cross compiler** is required.
+
+A cross compiler executes on one architecture while generating machine code for another.
 
 ```text
-C Source Code
-      │
-      ▼
-RISC-V Cross Compiler
-      │
-      ▼
-RISC-V Executable (ELF)
+Host Machine (x86-64)
+
+        │
+
+        ▼
+
+Cross Compiler
+
+        │
+
+        ▼
+
+RISC-V Executable
 ```
+
+Without cross compilation, software developed on the host system could never execute on the target RISC-V processor.
 
 ---
 
-## What is an ELF File?
+## Why Can't `hello.elf` Run Directly?
 
-ELF (Executable and Linkable Format) is the executable format generated by the RISC-V compiler.
+Although `hello.elf` is an executable, it contains RISC-V machine instructions rather than x86-64 instructions.
 
-In addition to machine instructions, an ELF file contains:
+For this reason, the operating system running on the host processor cannot execute it directly.
 
-- Program entry point
-- Executable code
-- Data sections
-- Memory layout information
-- Symbol information for debugging
-
-The executable generated during this task is:
+Instead, the executable is loaded into the Spike simulator, which behaves like a software implementation of a RISC-V processor.
 
 ```text
 hello.elf
+
+     │
+
+     ▼
+
+Spike Simulator
+
+     │
+
+     ▼
+
+Simulated RISC-V Processor
 ```
+
+Spike interprets each RISC-V instruction exactly as a physical processor would execute it.
 
 ---
 
-## Why Can't the Host Machine Execute `hello.elf` Directly?
+## Understanding Spike ISA Simulator
 
-The development environment runs on an **x86-64 processor**, whereas `hello.elf` contains **RISC-V machine instructions**.
+Spike is the official functional simulator for the RISC-V architecture.
 
-Since both processors use different Instruction Set Architectures (ISAs), the executable cannot run directly on the host machine.
+Rather than translating instructions, Spike emulates the internal behavior of a RISC-V processor.
 
-Instead, the Spike ISA Simulator emulates a RISC-V processor and executes the program.
+Its responsibilities include:
 
-### Host vs Target Architecture
+- fetching instructions,
+- decoding instructions,
+- executing RISC-V operations,
+- maintaining processor registers,
+- managing memory accesses.
+
+This makes Spike an essential tool for software validation before running applications on real hardware.
+
+---
+
+## Understanding the Proxy Kernel
+
+The Proxy Kernel (`pk`) acts as a lightweight runtime environment between the executable and the simulator.
+
+Its responsibilities include:
+
+- loading the executable into memory,
+- initializing the runtime environment,
+- setting up the stack,
+- preparing program arguments,
+- transferring control to the application's `main()` function.
+
+Unlike a complete operating system, the Proxy Kernel provides only the minimal functionality required for bare-metal RISC-V applications.
+
+This lightweight design makes it ideal for architecture validation and software development.
+# Executing a Custom RISC-V Application
+
+After validating the software toolchain using the reference `hello-spike` example, the next objective was to compile and execute one of the sample applications provided in the repository.
+
+The program selected for this task is `sum1ton.c`, a simple C application that computes the sum of integers from **1 to 9** and prints the result.
+
+Although the program itself is straightforward, it demonstrates the complete software execution flow of a RISC-V application, beginning with C source code and ending with execution on a simulated processor.
+
+---
+
+## Inspecting the Source Program
+
+Before compiling the application, the source code was examined to understand its functionality and expected output.
+
+```bash
+cat sum1ton.c
+```
+
+<p align="center">
+<img src="images/sum1ton.c_code.png" width="1000">
+</p>
+
+The program performs a simple iterative summation and prints the final result using the standard C library.
+
+Reviewing the source before compilation helps establish a clear understanding of the expected behavior during execution.
+
+---
+
+## Cross Compiling the Application
+
+The application was compiled using the RISC-V cross compiler.
+
+```bash
+riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c
+```
+
+<p align="center">
+<img src="images/sum1ton.o_output.png" width="1000">
+</p>
+
+Compilation completed successfully and produced the executable file `sum1ton.o`.
+
+Although the file uses the `.o` extension in this repository, it is a complete executable generated for the RISC-V architecture.
+
+---
+
+## Compilation Flow
 
 ```text
-        x86-64 Host Machine
+          sum1ton.c
+               │
+               ▼
+RISC-V Cross Compiler
+(riscv64-unknown-elf-gcc)
+               │
+               ▼
+          sum1ton.o
+      (RISC-V Executable)
+```
+
+The compiler translates the C source code into RISC-V machine instructions while also generating the executable metadata required by the runtime environment.
+
+---
+
+## Executing the Application
+
+The generated executable was executed using the Spike ISA Simulator together with the Proxy Kernel.
+
+```bash
+spike pk sum1ton.o
+```
+
+<p align="center">
+<img src="images/spike_output_of_sum1ton.o.png" width="1000">
+</p>
+
+<p align="center">
+<img src="images/verification_of_sum1ton.o.png" width="1000">
+</p>
+
+Program Output
+
+```text
+Sum from 1 to 9 is 45
+```
+
+The successful execution confirms that:
+
+- the application was compiled correctly,
+- the executable contains valid RISC-V instructions,
+- the Spike simulator executed every instruction successfully,
+- the Proxy Kernel initialized the runtime environment correctly,
+- the generated output matches the expected result.
+
+---
+
+## Complete Execution Flow
+
+```text
+          sum1ton.c
                 │
                 ▼
-     RISC-V Cross Compiler
+      Cross Compilation
                 │
                 ▼
-          hello.elf
-     (RISC-V Executable)
+        RISC-V Executable
                 │
                 ▼
       Spike ISA Simulator
@@ -395,145 +666,232 @@ Instead, the Spike ISA Simulator emulates a RISC-V processor and executes the pr
        Proxy Kernel (pk)
                 │
                 ▼
-        Execute main()
+       Execute Application
+                │
+                ▼
+  Sum from 1 to 9 is 45
 ```
 
----
-
-## Understanding the Spike ISA Simulator
-
-Spike is the official RISC-V ISA Simulator.
-
-Instead of translating instructions, Spike behaves like a software implementation of a RISC-V processor. It emulates the processor architecture, allowing RISC-V applications to execute on an x86-64 host machine.
-
-Its primary responsibilities include:
-
-- Executing RISC-V instructions
-- Emulating processor registers
-- Simulating memory operations
-- Supporting debugging and instruction tracing
+The successful completion of this workflow validates the complete RISC-V software toolchain provided within the development environment.
 
 ---
 
-## Understanding the Proxy Kernel (pk)
+# GUI-Based Development Using noVNC
 
-The Proxy Kernel (`pk`) is a lightweight runtime environment used with the Spike simulator.
+While command-line tools are sufficient for software compilation and execution, many stages of VLSI and FPGA development require graphical applications.
 
-Before the application begins execution, the Proxy Kernel:
+To support these tools, GitHub Codespaces provides a browser-based Linux desktop using **noVNC**.
 
-- Loads the executable into memory
-- Initializes the runtime environment
-- Sets up the program execution context
-- Transfers control to the application's `main()` function
+This graphical environment allows Linux GUI applications to run directly inside the browser without requiring a separate Linux installation.
 
-Unlike a full operating system, the Proxy Kernel provides only the essential services required to execute bare-metal RISC-V applications.
+Later tasks in the internship will make extensive use of applications such as:
+
+- Magic
+- GTKWave
+- Xschem
+- gedit
+
+Understanding how to access and use this environment is therefore an important part of the development workflow.
 
 ---
 
-## Complete Software Execution Flow
+## Launching the Desktop Environment
 
-The following diagram summarizes the complete workflow followed during this task.
+The graphical desktop was launched by opening the forwarded **Port 6080** from the GitHub Codespaces **PORTS** tab.
+
+Opening `vnc_lite.html` provides access to a complete Ubuntu desktop running inside the development container.
+
+<p align="center">
+<img src="images/no_vnc_interface.png" width="1000">
+</p>
+
+<p align="center">
+<img src="images/Screenshot 2026-07-19 162934.png" width="1000">
+</p>
+
+---
+
+## GUI Development Workflow
 
 ```text
-                C Program
-              (hello.c)
-                    │
-                    ▼
-     RISC-V Cross Compiler
-(riscv64-unknown-elf-gcc)
-                    │
-                    ▼
-              hello.elf
-        (Executable File)
-                    │
-                    ▼
-        Spike ISA Simulator
-                    │
-                    ▼
-         Proxy Kernel (pk)
-                    │
-                    ▼
-      Execute RISC-V Instructions
-                    │
-                    ▼
-              main()
-                    │
-                    ▼
-         Program Terminates
+GitHub Codespaces
+
+        │
+
+        ▼
+
+Forward Port (6080)
+
+        │
+
+        ▼
+
+noVNC Desktop
+
+        │
+
+        ▼
+
+Ubuntu Linux Desktop
+
+        │
+
+        ▼
+
+GUI Applications
 ```
----
 
-# Running the First RISC-V Reference Program
-
-After verifying the toolchain using the simple `hello-spike` example, the next step was to compile and execute one of the reference applications provided in the repository.
-
-The sample program `sum1ton.c` demonstrates the complete RISC-V software execution flow by calculating the sum of numbers from **1 to 9** and displaying the result through the Proxy Kernel.
+The graphical desktop shares the same filesystem as the terminal environment, allowing both interfaces to access the same project files.
 
 ---
 
-## Step 1: Inspect the Source Program
+## Accessing the Workspace
+
+After opening the graphical desktop, a terminal session was started and the project directory was accessed.
 
 ```bash
-cat sum1ton.c
+cd /workspaces/vsd-riscv2
+cd samples
+ls -ltr
 ```
+
 <p align="center">
-  <img src="images/sum1ton.c_code.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 163451.png" width="1000">
 </p>
-The source code was inspected before compilation to understand its functionality and expected output.
+
+<p align="center">
+<img src="images/linux.png" width="1000">
+</p>
+
+<p align="center">
+<img src="images/files_in_vsd_riscv2.png" width="1000">
+</p>
+
+The project files inside the graphical environment were verified successfully, confirming that both the terminal interface and the desktop environment operate on the same workspace.
 
 ---
 
-## Step 2: Compile the Program
+# Native Compilation
+
+Until this point, every application had been compiled for the RISC-V architecture.
+
+To understand the difference between native execution and cross execution, the same application was compiled using the host compiler.
 
 ```bash
-riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c
+gcc sum1ton.c
 ```
-<p align="center">
-  <img src="images/sum1ton.o_output.png" width="1000"/>
-</p>
-### Compilation Flow
+
+This produced the executable
 
 ```text
-sum1ton.c
-      │
-      ▼
-RISC-V Cross Compiler
-(riscv64-unknown-elf-gcc)
-      │
-      ▼
-sum1ton.o
+a.out
 ```
 
-The compiler successfully generated the executable `sum1ton.o`.
-
----
-
-## Step 3: Execute the Program
+The executable was then run directly on the host processor.
 
 ```bash
-spike pk sum1ton.o
+./a.out
 ```
+
 <p align="center">
-  <img src="images/spike_output_of_sum1ton.o.png" width="1000"/>
+<img src="images/Screenshot 2026-07-19 193212.png" width="1000">
 </p>
-<p align="center">
-  <img src="images/verification_of_sum1ton.o.png" width="1000"/>
-</p>
-### Program Output
+
+Output
 
 ```text
 Sum from 1 to 9 is 45
 ```
 
-The output confirms that:
-
-- The RISC-V cross compiler generated a valid executable.
-- The Spike ISA Simulator successfully executed the program.
-- The Proxy Kernel correctly initialized the runtime environment before transferring control to the application.
+This execution takes place entirely on the host x86-64 processor without requiring the Spike simulator.
 
 ---
 
-## Complete Execution Flow
+# Cross Compilation
+
+The same source program was then compiled once again for the RISC-V architecture.
+
+```bash
+riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c
+```
+
+<p align="center">
+<img src="images/sum1ton.o_output.png" width="1000">
+</p>
+
+The executable was validated using Spike.
+
+```bash
+spike pk sum1ton.o
+```
+
+<p align="center">
+<img src="images/spike_output_of_sum1ton.o.png" width="1000">
+</p>
+
+Output
+
+```text
+Sum from 1 to 9 is 45
+```
+
+Although both execution methods produce the same numerical result, they execute on completely different processor architectures.
+
+One executes directly on the host CPU, while the other executes on a simulated RISC-V processor.
+
+---
+
+# Editing and Rebuilding the Application
+
+One advantage of the graphical desktop environment is the ability to modify source code using graphical editors.
+
+The source file was opened using **gedit**.
+
+```bash
+gedit sum1ton.c &
+```
+
+<p align="center">
+<img src="images/code_changed_to_10.png" width="1000">
+</p>
+
+After modifying the source code, the application was rebuilt using the RISC-V cross compiler and executed again.
+
+<p align="center">
+<img src="images/sum_of_10.png" width="1000">
+</p>
+
+The updated program executed successfully, demonstrating the complete edit–compile–execute cycle within the graphical development environment.
+
+This workflow will be used extensively during subsequent internship tasks involving hardware description languages, simulations, waveform analysis, and layout verification.
+# Native Execution and Cross Execution
+
+During this task, the same application was executed using two different approaches. Although both methods produced the same output, the compilation process, executable format, and execution environment were fundamentally different.
+
+## Native Execution
+
+Native execution refers to compiling the application for the processor on which the operating system is currently running.
+
+```text
+          sum1ton.c
+               │
+               ▼
+          Native GCC
+               │
+               ▼
+             a.out
+               │
+               ▼
+      Host x86-64 Processor
+```
+
+The executable generated by the native compiler contains x86-64 machine instructions and therefore executes directly on the host processor without requiring any simulation.
+
+---
+
+## Cross Execution
+
+Cross execution involves compiling the same application for a different processor architecture.
 
 ```text
           sum1ton.c
@@ -542,316 +900,174 @@ The output confirms that:
     RISC-V Cross Compiler
                │
                ▼
-      sum1ton.o (ELF)
+          sum1ton.o
                │
                ▼
       Spike ISA Simulator
                │
                ▼
-       Proxy Kernel (pk)
-               │
-               ▼
-      Execute Application
-               │
-               ▼
-   Sum from 1 to 9 is 45
+       Simulated RISC-V CPU
 ```
 
----
-
-# GUI-Based Development Using noVNC Desktop
-
-In addition to the terminal-based workflow, GitHub Codespaces provides a graphical Linux desktop through **noVNC**. This enables the use of GUI-based development tools directly from a web browser without requiring a local Linux installation.
-
-The graphical desktop is particularly useful for Electronic Design Automation (EDA) tools such as **Magic**, **GTKWave**, **Xschem**, and graphical editors like **gedit**, which are extensively used throughout the internship.
+Since the generated executable contains RISC-V instructions, it cannot execute directly on the host processor. Instead, Spike emulates the target architecture and executes the application instruction by instruction.
 
 ---
 
-## Launching the noVNC Desktop
+## Comparison
 
-The graphical desktop was launched by opening the forwarded **noVNC Desktop (Port 6080)** from the GitHub Codespaces **PORTS** tab.
+| Native Execution | Cross Execution |
+|------------------|-----------------|
+| Executed directly on the host processor | Executed on a simulated RISC-V processor |
+| Uses the native GCC compiler | Uses the RISC-V cross compiler |
+| Generates an x86-64 executable | Generates a RISC-V executable |
+| Does not require simulation | Requires the Spike ISA Simulator |
+| Intended for the host machine | Intended for the target architecture |
 
-After opening `vnc_lite.html`, a complete Linux desktop environment became available inside the browser.
-<p align="center">
-  <img src="images/no_vnc_interface.png" width="1000"/>
-</p>
-<p align="center">
-  <img src="images/Screenshot 2026-07-19 162934.png" width="1000"/>
-</p>
-### GUI Environment Flow
+Although the execution environments differ, both workflows produce identical application behavior when implemented correctly.
+
+---
+
+# Command-Line and Graphical Development
+
+The internship environment supports both command-line and graphical development.
+
+Each workflow serves a different purpose and both become important during FPGA and VLSI development.
+
+## Command-Line Workflow
+
+The terminal provides a fast and efficient interface for navigating directories, compiling applications, executing programs, and performing automation tasks.
 
 ```text
-GitHub Codespace
-        │
-        ▼
-Forwarded Port (6080)
-        │
-        ▼
-noVNC
-        │
-        ▼
-Linux Desktop
-        │
-        ▼
-GUI Applications
-```
-
----
-
-## Accessing the Project Workspace
-
-A terminal was opened inside the graphical desktop and navigated to the project workspace.
-
-```bash
-cd /workspaces/vsd-riscv2
-cd samples
-ls -ltr
-```
-<p align="center">
-  <img src="images/Screenshot 2026-07-19 163451.png" width="1000"/>
-</p>
-<p align="center">
-  <img src="images/linux.png" width="1000"/>
-</p>
-<p align="center">
-  <img src="images/files_in_vsd_riscv2.png" width="1000"/>
-</p>
-The sample programs and build files were successfully verified.
-
----
-
-## Native Compilation and Execution (Host x86)
-
-The reference application was first compiled using the native GCC compiler.
-
-```bash
-gcc sum1ton.c
-```
-
-The generated executable was then executed.
-
-```bash
-./a.out
-```
-<p align="center">
-  <img src="images/Screenshot 2026-07-19 193212.png" width="1000"/>
-</p>
-The generated executable was then executed.
-### Output
-
-```text
-Sum from 1 to 9 is 45
-```
-<p align="center">
-  <img src="images/verification_of_sum1ton.o.png" width="1000"/>
-</p>
-This confirms that the application executes correctly on the **host x86-64 processor** using the native compiler.
-
----
-
-## RISC-V Compilation and Execution
-
-The same source program was then compiled for the RISC-V architecture.
-
-```bash
-riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c
-```
-<p align="center">
-  <img src="images/sum1ton.o_output.png" width="1000"/>
-</p>
-The generated executable was executed using the Spike ISA Simulator and Proxy Kernel.
-
-```bash
-spike pk sum1ton.o
-```
-<p align="center">
-  <img src="images/spike_output_of_sum1ton.o.png" width="1000"/>
-</p>
-### Output
-
-```text
-Sum from 1 to 9 is 45
-```
-
-This confirms that the application executes successfully on the simulated RISC-V processor.
-
----
-
-## Editing Source Code Using gedit
-
-The graphical editor **gedit** was used to edit the source code directly within the noVNC desktop.
-
-```bash
-gedit sum1ton.c &
-```
-<p align="center">
-  <img src="images/code_changed_to_10.png" width="1000"/>
-</p>
-<p align="center">
-  <img src="images/sum_of_10.png" width="1000"/>
-</p>
-
-After modifying the source code, the application was rebuilt using the RISC-V compiler and executed again with Spike.
-
-This validated the complete edit → compile → execute workflow inside the graphical development environment.
-
----
-# Engineering Concepts
-
-## CLI vs GUI Development
-
-Throughout this task, two different development workflows were explored.
-
-### Command-Line Workflow
-
-```text
-VS Code Terminal
-        │
-        ▼
+Source Code
+      │
+      ▼
 Compile
-        │
-        ▼
+      │
+      ▼
 Execute
-        │
-        ▼
-Debug
+      │
+      ▼
+Verify
 ```
 
-### Graphical Workflow
+---
+
+## Graphical Workflow
+
+The noVNC desktop enables the use of Linux GUI applications that cannot be operated entirely through the command line.
 
 ```text
+GitHub Codespaces
+        │
+        ▼
 noVNC Desktop
         │
         ▼
 GUI Applications
         │
         ▼
-Edit Source Code
-        │
-        ▼
-Compile & Execute
+Development and Verification
 ```
 
-Both workflows operate on the same project workspace but provide different development experiences depending on the tools being used.
+Graphical tools such as Magic, GTKWave, Xschem, and gedit will become increasingly important during the later stages of the internship, particularly for circuit visualization, waveform analysis, layout development, and debugging.
 
----
-## Native Execution vs Cross Execution
-
-The same C source program can be executed in two different ways.
-
-### Native Execution
-
-```text
-sum1ton.c
-      │
-      ▼
-Native GCC
-      │
-      ▼
-a.out
-      │
-      ▼
-Host x86-64 Processor
-```
-
-### Cross Execution
-
-```text
-sum1ton.c
-      │
-      ▼
-RISC-V Cross Compiler
-      │
-      ▼
-sum1ton.o
-      │
-      ▼
-Spike ISA Simulator
-      │
-      ▼
-Simulated RISC-V Processor
-```
-
-Although both executions produce the same output, they target completely different processor architectures.
-
-| Native Execution | Cross Execution |
-|------------------|-----------------|
-| Executed on the host x86-64 processor | Executed on a simulated RISC-V processor |
-| Compiled using `gcc` | Compiled using `riscv64-unknown-elf-gcc` |
-| Generates `a.out` | Generates a RISC-V executable |
-| Runs directly on the host | Requires Spike ISA Simulator |
 ---
 
 # Commands Executed
 
-| No. | Command | Purpose | Observation |
-|----:|---------|----------|-------------|
-| 1 | `pwd` | Display the current working directory. | Verified the repository was mounted under `/workspaces/vsd-riscv2`. |
-| 2 | `ls` | List the repository contents. | Verified the top-level directories and files. |
-| 3 | `ls -la .devcontainer` | Inspect the Codespaces configuration files. | Identified the Dockerfile, `devcontainer.json`, and `supervisord.conf`. |
-| 4 | `ls -la samples` | Explore the sample application directory. | Verified the presence of sample programs, startup assembly, and the Makefile. |
-| 5 | `cat samples/Makefile` | Examine the build automation script. | Understood the compilation workflow and generated outputs. |
-| 6 | `cd samples` | Navigate to the sample application directory. | Accessed the build environment successfully. |
-| 7 | `make hello-spike` | Build the reference Hello World application. | Generated `hello.c` and `hello.elf` successfully. |
-| 8 | `ls -l` | Verify generated build artifacts. | Confirmed the successful creation of `hello.c` and `hello.elf`. |
-| 9 | `file hello.elf` | Inspect the executable format. | Verified that `hello.elf` is a 64-bit RISC-V ELF executable. |
-| 10 | `spike --help` | Display Spike ISA Simulator usage information. | Verified that Spike was installed and available. |
-| 11 | `which pk` | Locate the Proxy Kernel executable. | Confirmed the availability of the Proxy Kernel (`pk`). |
-| 12 | `spike pk hello.elf` | Execute the reference RISC-V application. | Successfully executed the program using Spike and the Proxy Kernel. |
-| 13 | `cat sum1ton.c` | Inspect the source code of the reference application. | Understood the application logic before compilation. |
-| 14 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Cross-compile the application for the RISC-V architecture. | Successfully generated the executable `sum1ton.o`. |
-| 15 | `file sum1ton.o` | Verify the executable format. | Confirmed that `sum1ton.o` is a RISC-V ELF executable. |
-| 16 | `spike pk sum1ton.o` | Execute the RISC-V application. | Successfully displayed the expected output: **"Sum from 1 to 9 is 45"**. |
-| 17 | `cd /workspaces/vsd-riscv2` | Navigate to the project workspace from the noVNC desktop. | Successfully accessed the mounted GitHub Codespaces workspace. |
-| 18 | `cd samples` | Open the sample application directory inside the GUI environment. | Verified the project structure from the graphical desktop. |
-| 19 | `ls -ltr` | List the contents of the sample directory. | Confirmed the availability of source files, executables, and build files. |
-| 20 | `gcc sum1ton.c` | Compile the application using the native GCC compiler. | Successfully generated the host executable `a.out`. |
-| 21 | `./a.out` | Execute the native x86 application. | Successfully displayed the expected output on the host processor. |
-| 22 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Cross-compile the application for the RISC-V architecture from the GUI environment. | Successfully regenerated the RISC-V executable. |
-| 23 | `spike pk sum1ton.o` | Execute the RISC-V executable using Spike. | Successfully validated execution on the simulated RISC-V processor. |
-| 24 | `gedit sum1ton.c &` | Open the source code using the graphical editor. | Successfully edited the application using the noVNC desktop environment. |
-| 25 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Rebuild the modified application. | Successfully compiled the updated source code. |
-| 26 | `spike pk sum1ton.o` | Execute the modified RISC-V application. | Verified that the modified source code executed successfully. |
+The following commands were executed throughout this task to explore the repository, build applications, validate the software toolchain, and understand the execution workflow.
+
+| No. | Command | Purpose |
+|----:|---------|---------|
+| 1 | `pwd` | Verify the current working directory. |
+| 2 | `ls` | Display repository contents. |
+| 3 | `ls -la .devcontainer` | Inspect development container configuration. |
+| 4 | `ls -la samples` | Explore the sample applications. |
+| 5 | `cat samples/Makefile` | Study the automated build process. |
+| 6 | `cd samples` | Navigate to the sample directory. |
+| 7 | `make hello-spike` | Build the reference application. |
+| 8 | `ls -l` | Verify generated build artifacts. |
+| 9 | `file hello.elf` | Inspect the executable format. |
+| 10 | `spike --help` | Verify the Spike simulator installation. |
+| 11 | `which pk` | Locate the Proxy Kernel. |
+| 12 | `spike pk hello.elf` | Execute the reference application. |
+| 13 | `cat sum1ton.c` | Examine the source code. |
+| 14 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Cross compile the sample application. |
+| 15 | `file sum1ton.o` | Verify the generated executable. |
+| 16 | `spike pk sum1ton.o` | Execute the RISC-V application. |
+| 17 | `gcc sum1ton.c` | Compile the application natively. |
+| 18 | `./a.out` | Execute the native application. |
+| 19 | `gedit sum1ton.c &` | Edit the source code graphically. |
+| 20 | `riscv64-unknown-elf-gcc -o sum1ton.o sum1ton.c` | Rebuild the modified application. |
+| 21 | `spike pk sum1ton.o` | Verify the updated application. |
 
 ---
 
 # Key Learnings
 
-| Topic | Learning |
-|--------|----------|
-| GitHub Codespaces | Provides a fully configured cloud-based development environment without requiring local tool installation. |
-| Repository Structure | Understanding the project organization simplifies navigation, development, and debugging. |
-| `.devcontainer` | Defines the complete software environment and automatically configures the development container. |
-| Makefile | Automates the build process, reducing manual compilation steps and ensuring reproducible builds. |
-| Cross Compilation | Applications developed on an x86-64 host can be compiled for a different target architecture such as RISC-V using a cross compiler. |
-| Native Compilation | The native GCC compiler generates executables that run directly on the host x86-64 processor. |
-| ELF Executable | ELF files contain executable machine code, memory layout information, program entry points, and debugging symbols. |
-| Spike ISA Simulator | Spike emulates a complete RISC-V processor, enabling RISC-V applications to execute on an x86-64 host system. |
-| Proxy Kernel (`pk`) | Provides the runtime environment required to initialize memory and transfer control to the application before execution. |
-| Native vs Cross Execution | The same C source code can be executed either as a native x86 application or as a RISC-V application through cross compilation and simulation. |
-| noVNC Desktop | Provides a complete Linux graphical desktop within GitHub Codespaces for running GUI-based development tools. |
-| GUI-Based Development | Enables graphical applications such as **gedit**, **GTKWave**, **Magic**, and **Xschem** to be used directly from a web browser. |
-| Source Code Editing | Applications can be modified, rebuilt, and re-executed entirely within the graphical desktop environment. |
-| Software Execution Flow | Understood the complete workflow: **C Source Code → Cross Compiler → ELF Executable → Spike ISA Simulator → Proxy Kernel → Program Execution**. |
-| Development Workflow | Successfully completed the complete engineering workflow of exploring, compiling, executing, modifying, rebuilding, verifying, and documenting a RISC-V application. |
+This task provided an understanding of the complete software workflow used throughout the internship.
+
+The major concepts explored include:
+
+- Setting up a cloud-based RISC-V development environment using GitHub Codespaces.
+- Understanding the organization of the reference repository.
+- Exploring the purpose of the development container configuration.
+- Understanding the role of the Makefile in automating software compilation.
+- Compiling applications using the RISC-V cross compiler.
+- Understanding the structure and purpose of ELF executables.
+- Executing RISC-V software using the Spike ISA Simulator.
+- Understanding the responsibility of the Proxy Kernel during program initialization.
+- Comparing native execution with cross execution.
+- Working with both terminal-based and graphical Linux development environments.
+- Performing the complete software development cycle consisting of source code inspection, compilation, execution, verification, modification, rebuilding, and validation.
+
+These concepts establish the software foundation required before progressing toward processor design, hardware IP development, FPGA implementation, and system-level integration.
 
 ---
 
 # Task Outcome
 
-By completing **Task-1: Environment Setup & RISC-V Reference Bring-Up**, I successfully:
+The objectives defined for this task were successfully completed.
 
-- Configured the GitHub Codespaces development environment.
-- Explored and understood the reference repository structure.
-- Analyzed the Makefile-based build system.
-- Compiled and executed reference RISC-V applications.
-- Verified the generated ELF executables.
-- Understood the complete software execution flow using the Spike ISA Simulator and Proxy Kernel.
-- Compared native x86 execution with cross-compiled RISC-V execution.
-- Explored both command-line and graphical development workflows using the noVNC desktop.
-- Edited, rebuilt, and re-executed applications using the graphical editor.
-- Established a complete development environment for the upcoming VSDFPGA Labs, custom IP development, and FPGA-based RISC-V system implementation.
+The development environment was configured using GitHub Codespaces, the repository structure was explored, and the software build process was analyzed.
 
-This task provides the software development foundation required for the remaining stages of the internship, including hardware IP design, SoC integration, and FPGA implementation.
+Reference applications were compiled and executed successfully using the RISC-V cross compiler, Spike ISA Simulator, and Proxy Kernel. The generated executables were verified, and both native and cross-compilation workflows were evaluated to understand their differences.
+
+The graphical development environment provided by noVNC was also explored, demonstrating that both terminal-based and GUI-based workflows operate on the same project workspace.
+
+Completion of this task establishes a working software environment that will be used throughout the remaining internship activities involving hardware design, verification, custom IP development, and FPGA implementation.
 
 ---
+
+# Conclusion
+
+This task introduced the complete software workflow required for RISC-V application development. Rather than focusing only on executing commands, the activities were used to understand how source code is transformed into executable machine instructions and how those instructions are executed on a simulated RISC-V processor.
+
+The concepts explored in this task—including cross compilation, executable formats, software simulation, runtime initialization, and development environments—form the foundation for the remaining stages of the internship.
+
+With the software toolchain successfully validated, the environment is now prepared for subsequent tasks involving hardware description languages, processor customization, memory design, FPGA implementation, and complete RISC-V system development.
+
+---
+
+# References
+
+1. Official RISC-V ISA Specification  
+   https://riscv.org/technical/specifications/
+
+2. Spike RISC-V ISA Simulator  
+   https://github.com/riscv-software-src/riscv-isa-sim
+
+3. RISC-V Proxy Kernel (pk)  
+   https://github.com/riscv-software-src/riscv-pk
+
+4. Official Internship Repository  
+   https://github.com/vsdip/vsd-riscv2
+
+5. GitHub Codespaces Documentation  
+   https://docs.github.com/en/codespaces
+
+6. GNU Make Documentation  
+   https://www.gnu.org/software/make/manual/
+
+7. ELF Specification  
+   https://refspecs.linuxfoundation.org/elf/
